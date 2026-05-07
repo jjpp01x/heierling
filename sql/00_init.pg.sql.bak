@@ -1,0 +1,33 @@
+-- Script maestro de inicialización
+-- Ejecuta todos los archivos en orden correcto
+
+-- Tablas
+\i /home/jpuser/heierling/sql/01_proveedor.pg.sql
+\i /home/jpuser/heierling/sql/02_catalogo_productos.pg.sql
+\i /home/jpuser/heierling/sql/03_inventario.pg.sql
+\i /home/jpuser/heierling/sql/04_cliente.pg.sql
+\i /home/jpuser/heierling/sql/05_registro_compra.pg.sql
+\i /home/jpuser/heierling/sql/06_registro_venta.pg.sql
+\i /home/jpuser/heierling/sql/07_reservas.pg.sql
+
+-- Funciones
+\i /home/jpuser/heierling/sql/08_funcion_alta_producto.pg.sql
+\i /home/jpuser/heierling/sql/09_funcion_baja_producto.pg.sql
+\i /home/jpuser/heierling/sql/10_funcion_renombrar_producto.pg.sql
+\i /home/jpuser/heierling/sql/11_funcion_compra_producto.pg.sql
+\i /home/jpuser/heierling/sql/12_funcion_venta_producto.pg.sql
+\i /home/jpuser/heierling/sql/13_funcion_existencias_producto.pg.sql
+\i /home/jpuser/heierling/sql/14_funcion_compras_anuales.pg.sql
+\i /home/jpuser/heierling/sql/15_funcion_ventas_anuales.pg.sql
+\i /home/jpuser/heierling/sql/17_funcion_cancelar_reserva.pg.sql
+\i /home/jpuser/heierling/sql/18_funcion_inventario_completo.pg.sql
+\i /home/jpuser/heierling/sql/19_funcion_convertir_reserva_venta.pg.sql
+
+-- Auditoría y trigger
+\i /home/jpuser/heierling/sql/20_auditoria_trigger.pg.sql
+
+-- Vista
+\i /home/jpuser/heierling/sql/21_vista_inventario.pg.sql
+
+-- Datos de prueba
+\i /home/jpuser/heierling/sql/16_datos_prueba.pg.sql
