@@ -1,4 +1,5 @@
 from conexion import conectar
+from auth import login
 
 def compra_producto():
     # Pedir datos de la compra al usuario
@@ -78,16 +79,24 @@ def historial_compras_proveedor():
         print(f"No hay compras registradas para el proveedor {cif}.")
 
 if __name__ == "__main__":
-    print("1. Registrar compra")
-    print("2. Compras anuales")
-    print("3. Historial de compras por proveedor")
+    # Verificar credenciales antes de acceder al sistema
+    usuario = login()
+    if usuario is None:
+        exit()
+
+    # Solo el admin puede registrar compras y ver informes anuales
+    print("\n1. Historial de compras por proveedor")
+    if usuario["rol"] == "admin":
+        print("2. Registrar compra")
+        print("3. Compras anuales")
+
     opcion = input("Elige una opcion: ")
 
     if opcion == "1":
-        compra_producto()
-    elif opcion == "2":
-        compras_anuales()
-    elif opcion == "3":
         historial_compras_proveedor()
+    elif opcion == "2" and usuario["rol"] == "admin":
+        compra_producto()
+    elif opcion == "3" and usuario["rol"] == "admin":
+        compras_anuales()
     else:
-        print("Opcion no valida.")
+        print("Opcion no valida o sin permisos.")

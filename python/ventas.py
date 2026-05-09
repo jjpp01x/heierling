@@ -1,4 +1,5 @@
 from conexion import conectar
+from auth import login
 
 def venta_producto():
     # Pedir datos de la venta al usuario
@@ -78,16 +79,26 @@ def historial_ventas_cliente():
         print(f"No hay ventas registradas para el cliente {id_cliente}.")
 
 if __name__ == "__main__":
-    print("1. Registrar venta")
-    print("2. Ventas anuales")
-    print("3. Historial de ventas por cliente")
+    # Verificar credenciales antes de acceder al sistema
+    usuario = login()
+    if usuario is None:
+        exit()
+
+    # Ambos roles pueden registrar ventas y ver historial
+    print("\n1. Registrar venta")
+    print("2. Historial de ventas por cliente")
+
+    # Solo el admin puede ver informes anuales
+    if usuario["rol"] == "admin":
+        print("3. Ventas anuales")
+
     opcion = input("Elige una opcion: ")
 
     if opcion == "1":
         venta_producto()
     elif opcion == "2":
-        ventas_anuales()
-    elif opcion == "3":
         historial_ventas_cliente()
+    elif opcion == "3" and usuario["rol"] == "admin":
+        ventas_anuales()
     else:
-        print("Opcion no valida.")
+        print("Opcion no valida o sin permisos.")

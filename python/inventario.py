@@ -1,4 +1,5 @@
 from conexion import conectar
+from auth import login
 
 def existencias_producto():
     # Pedir el codigo EAN del producto
@@ -65,9 +66,16 @@ def inventario_por_marca():
         print(f"No hay productos de la marca {marca} en el inventario.")
 
 if __name__ == "__main__":
-    print("1. Existencias de un producto")
+    # Verificar credenciales antes de acceder al sistema
+    usuario = login()
+    if usuario is None:
+        exit()
+
+    # Ambos roles pueden ver el inventario
+    print("\n1. Existencias de un producto")
     print("2. Inventario completo")
     print("3. Inventario por marca")
+
     opcion = input("Elige una opcion: ")
 
     if opcion == "1":

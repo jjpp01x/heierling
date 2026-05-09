@@ -1,4 +1,5 @@
 from conexion import conectar
+from auth import login
 
 def crear_reserva():
     # Pedir datos de la reserva al usuario
@@ -85,10 +86,20 @@ def cancelar_reserva():
     print("Reserva cancelada correctamente.")
 
 if __name__ == "__main__":
-    print("1. Crear reserva")
+    # Verificar credenciales antes de acceder al sistema
+    usuario = login()
+    if usuario is None:
+        exit()
+
+    # Ambos roles pueden crear reservas, ver reservas y convertirlas en venta
+    print("\n1. Crear reserva")
     print("2. Ver reservas de un cliente")
     print("3. Convertir reserva en venta")
-    print("4. Cancelar reserva")
+
+    # Solo el admin puede cancelar reservas
+    if usuario["rol"] == "admin":
+        print("4. Cancelar reserva")
+
     opcion = input("Elige una opcion: ")
 
     if opcion == "1":
@@ -97,7 +108,7 @@ if __name__ == "__main__":
         reservas_cliente()
     elif opcion == "3":
         convertir_reserva_en_venta()
-    elif opcion == "4":
+    elif opcion == "4" and usuario["rol"] == "admin":
         cancelar_reserva()
     else:
-        print("Opcion no valida.")
+        print("Opcion no valida o sin permisos.")

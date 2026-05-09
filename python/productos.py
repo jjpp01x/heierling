@@ -1,4 +1,5 @@
 from conexion import conectar
+from auth import login
 
 def alta_producto():
     # Pedir datos del nuevo producto al usuario
@@ -88,19 +89,27 @@ def buscar_producto():
         print("No se encontraron productos.")
 
 if __name__ == "__main__":
-    print("1. Alta de producto")
-    print("2. Baja de producto")
-    print("3. Renombrar producto")
-    print("4. Buscar producto")
+    # Verificar credenciales antes de acceder al sistema
+    usuario = login()
+    if usuario is None:
+        exit()
+
+    # Mostrar opciones según el rol del usuario
+    print("\n1. Buscar producto")
+    if usuario["rol"] == "admin":
+        print("2. Alta de producto")
+        print("3. Baja de producto")
+        print("4. Renombrar producto")
+
     opcion = input("Elige una opcion: ")
 
     if opcion == "1":
-        alta_producto()
-    elif opcion == "2":
-        baja_producto()
-    elif opcion == "3":
-        renombrar_producto()
-    elif opcion == "4":
         buscar_producto()
+    elif opcion == "2" and usuario["rol"] == "admin":
+        alta_producto()
+    elif opcion == "3" and usuario["rol"] == "admin":
+        baja_producto()
+    elif opcion == "4" and usuario["rol"] == "admin":
+        renombrar_producto()
     else:
-        print("Opcion no valida.")
+        print("Opcion no valida o sin permisos.")
