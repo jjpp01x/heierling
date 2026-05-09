@@ -47,14 +47,18 @@ heierling/
 │   ├── 19_funcion_convertir_reserva_venta.pg.sql
 │   ├── 20_auditoria_trigger.pg.sql
 │   ├── 21_vista_inventario.pg.sql
-│   └── 22_indices.pg.sql
+│   ├── 22_indices.pg.sql
+│   └── 23_usuarios.pg.sql
 └── python/
 ├── conexion.py
+├── auth.py
 ├── productos.py
 ├── inventario.py
 ├── compras.py
 ├── ventas.py
-└── reservas.py
+├── reservas.py
+└── usuarios.py
+
 ## Instalación y ejecución con Docker
 
 ### Requisitos
@@ -74,13 +78,20 @@ cd heierling
 cp .env.example .env
 ```
 
-3. Arrancar los contenedores
+3. Editar el .env con tus credenciales
+
+POSTGRES_HOST=db
+POSTGRES_DB=heierling
+POSTGRES_USER=hans
+POSTGRES_PASSWORD=tu_contraseña
+
+4. Arrancar los contenedores
 ```bash
 docker compose up
 ```
 
 La base de datos se inicializa automáticamente con todas las tablas,
-funciones, trigger, vista e índices.
+funciones, trigger, vista, índices y usuarios.
 
 ## Uso
 
@@ -101,22 +112,63 @@ docker exec -it heierling_app python3 ventas.py
 
 # Gestión de reservas
 docker exec -it heierling_app python3 reservas.py
+
+# Gestión de usuarios
+docker exec -it heierling_app python3 usuarios.py
 ```
+
+## Credenciales por defecto
+
+| Usuario | Contraseña | Rol |
+|---------|------------|-----|
+| admin | He1erl!ng24 | admin |
+| empleado | Sk1B00t$24 | empleado |
+
+## Roles y permisos
+
+| Función | Admin | Empleado |
+|---------|-------|----------|
+| Alta de producto | ✓ | ✗ |
+| Baja de producto | ✓ | ✗ |
+| Renombrar producto | ✓ | ✗ |
+| Buscar producto | ✓ | ✓ |
+| Registrar compra | ✓ | ✗ |
+| Compras anuales | ✓ | ✗ |
+| Historial compras proveedor | ✓ | ✓ |
+| Registrar venta | ✓ | ✓ |
+| Ventas anuales | ✓ | ✗ |
+| Historial ventas cliente | ✓ | ✓ |
+| Existencias producto | ✓ | ✓ |
+| Inventario completo | ✓ | ✓ |
+| Inventario por marca | ✓ | ✓ |
+| Crear reserva | ✓ | ✓ |
+| Ver reservas cliente | ✓ | ✓ |
+| Convertir reserva en venta | ✓ | ✓ |
+| Cancelar reserva | ✓ | ✗ |
+| Gestión de usuarios | ✓ | ✗ |
 
 ## Base de datos
 
 ### Tablas
 - `proveedor` — empresas suministradoras
-- `catalogo_productos` — catálogo de botas con EAN, marca, tipo y talla
+- `catalogo_productos` — catálogo con EAN, marca, tipo y talla
 - `inventario` — unidades disponibles por producto
 - `cliente` — clientes de la tienda
 - `registro_compra` — entradas de stock
 - `registro_venta` — salidas de stock
 - `reservas` — botas separadas para clientes
+- `usuarios` — usuarios del sistema con contraseñas hasheadas
 
 ### Funciones (10)
 Alta, baja y renombrado de productos, compra, venta, existencias,
 compras anuales, ventas anuales, cancelar reserva y convertir reserva en venta.
+
+### Seguridad
+- Autenticación con login obligatorio en todos los módulos
+- Contraseñas hasheadas con SHA-256
+- Control de acceso por rol (admin/empleado)
+- Validación de contraseñas seguras (mayúsculas, minúsculas, números y símbolos)
+- Usuarios activables y desactivables sin borrar historial
 
 ### Extras
 - Trigger de auditoría sobre la tabla inventario
