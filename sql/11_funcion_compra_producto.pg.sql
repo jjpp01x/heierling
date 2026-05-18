@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION compra_producto(
-    p_cif        VARCHAR(9),
+    p_cif        VARCHAR(30),
     p_codigo_ean CHAR(13),
     p_unidades   INT,
     p_precio     NUMERIC(10,2),
