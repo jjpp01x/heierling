@@ -1,3 +1,4 @@
+-- Tabla que almacena el catálogo de referencias de botas, con una fila por cada combinación de modelo y talla.
 CREATE TABLE catalogo_productos (
     codigo_ean     CHAR(13)     NOT NULL,
     nombre_modelo  VARCHAR(200) NOT NULL,

@@ -1,4 +1,4 @@
--- Tabla para almacenar los usuarios del sistema
+-- Tabla que almacena los usuarios del sistema con sus credenciales hasheadas y rol de acceso.
 CREATE TABLE IF NOT EXISTS usuarios (
     id_usuario  SERIAL       PRIMARY KEY,
     usuario     VARCHAR(50)  NOT NULL UNIQUE,

@@ -1,3 +1,4 @@
+-- Tabla que almacena las reservas activas de botas apartadas por clientes pendientes de conversión en venta.
 CREATE TABLE reservas (
     id_reserva    SERIAL        PRIMARY KEY,
     id_cliente    INT           NOT NULL,

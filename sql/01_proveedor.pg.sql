@@ -1,3 +1,4 @@
+-- Tabla que almacena los proveedores que suministran productos a la tienda.
 CREATE TABLE proveedor (
     cif            VARCHAR(30)   NOT NULL,
     nombre_empresa VARCHAR(150) NOT NULL,

@@ -163,11 +163,28 @@ docker exec -it heierling_app python3 usuarios.py
 Alta, baja y renombrado de productos, compra, venta, existencias,
 compras anuales, ventas anuales, cancelar reserva y convertir reserva en venta.
 
+### Índices
+Se han creado 12 índices manualmente sobre las columnas más consultadas: las claves foráneas
+de `registro_compra`, `registro_venta` y `reservas`, los campos de búsqueda habitual en
+`catalogo_productos` (`marca`, `tipo`) y los campos de auditoría en `log_operaciones`
+(`fecha`, `usuario`).
+
+### Vistas
+La vista `vista_inventario` muestra el inventario completo combinando `catalogo_productos`
+e `inventario`, y calcula automáticamente la ubicación de cada producto: `SIN STOCK` si hay
+0 unidades, `TIENDA` si hay exactamente 1 y `ALMACEN EXTERIOR` si hay más de 1.
+
+### Disparadores
+El disparador `tr_auditoria_inventario` se activa automáticamente después de cualquier
+INSERT, UPDATE o DELETE sobre la tabla `inventario`, registrando en `log_operaciones` el
+tipo de operación, el producto afectado, las unidades antes y después del cambio, la fecha
+y el usuario de base de datos que realizó la operación.
+
 ### Seguridad
 - Autenticación con login obligatorio en todos los módulos
-- Contraseñas hasheadas con SHA-256
+- Contraseñas almacenadas como hash SHA-256 (nunca en texto plano)
+- El sistema valida que las contraseñas cumplan requisitos mínimos de seguridad: longitud mínima de 8 caracteres, al menos una mayúscula, una minúscula, un número y un símbolo
 - Control de acceso por rol (admin/empleado)
-- Validación de contraseñas seguras (mayúsculas, minúsculas, números y símbolos)
 - Usuarios activables y desactivables sin borrar historial
 
 ### Extras
